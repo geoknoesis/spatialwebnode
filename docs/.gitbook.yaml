@@ -19,7 +19,7 @@ plugins:
 
 pluginsConfig:
   github:
-    url: https://github.com/your-org/spatialwebnode
+    url: https://github.com/geoknoesis/spatialwebnode
   ga:
     token: YOUR_GOOGLE_ANALYTICS_TOKEN
   sitemap:

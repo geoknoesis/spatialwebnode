@@ -4,13 +4,13 @@
 
 ## 📚 Documentation
 
-📖 **[Full Documentation](https://your-org.github.io/spatialwebnode/)** - Complete guide to hstpd
+📖 **[Full Documentation](https://geoknoesis.github.io/spatialwebnode/)** - Complete guide to hstpd
 
 ## 🚀 Quick Start
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/spatialwebnode.git
+git clone https://github.com/geoknoesis/spatialwebnode.git
 cd spatialwebnode
 
 # Build the project

@@ -1,0 +1,52 @@
+{
+  "title": "hstpd Documentation",
+  "description": "Complete documentation for hstpd - HSTP (Hypermedia Spatial Transport Protocol) daemon",
+  "author": "Your Organization",
+  "language": "en",
+  "structure": {
+    "readme": "README.md",
+    "summary": "SUMMARY.md"
+  },
+  "plugins": [
+    "search",
+    "copy-code-button",
+    "theme-default",
+    "highlight",
+    "prism",
+    "github",
+    "gitbook-plugin-anchors",
+    "gitbook-plugin-advanced-emoji",
+    "gitbook-plugin-code",
+    "gitbook-plugin-ga",
+    "gitbook-plugin-sitemap"
+  ],
+  "pluginsConfig": {
+    "github": {
+      "url": "https://github.com/geoknoesis/spatialwebnode"
+    },
+    "ga": {
+      "token": "YOUR_GOOGLE_ANALYTICS_TOKEN"
+    },
+    "sitemap": {
+      "hostname": "https://your-docs-domain.com"
+    },
+    "prism": {
+      "css": [
+        "prismjs/themes/prism-tomorrow.css"
+      ],
+      "lang": [
+        "kotlin",
+        "yaml",
+        "json",
+        "bash",
+        "dockerfile",
+        "xml"
+      ]
+    }
+  },
+  "variables": {
+    "version": "1.0.0",
+    "project_name": "hstpd",
+    "full_name": "HSTP (Hypermedia Spatial Transport Protocol) daemon"
+  }
+} 
