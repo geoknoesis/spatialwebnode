@@ -14,6 +14,7 @@
 
 Stephane specializes in:
 
+- **Semantic Webs**: Semantic Web technologies and standards
 - **Spatial Computing**: Location-aware systems and spatial data processing
 - **Distributed Systems**: Scalable, fault-tolerant architectures
 - **Protocol Design**: Custom transport protocols and standards
@@ -55,6 +56,7 @@ Stephane actively contributes to the open source community through:
 
 Stephane has extensive experience in:
 
+- **Semantic Web Standards**: Semantic web standards such as RDF, OWL, SHACL, JSON-LD
 - **Software Architecture**: Designing large-scale distributed systems
 - **Protocol Development**: Creating and implementing custom protocols
 - **Spatial Technologies**: Location-based services and spatial data
