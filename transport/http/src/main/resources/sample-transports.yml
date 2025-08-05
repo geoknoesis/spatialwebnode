@@ -1,0 +1,60 @@
+# Sample HTTP Transport Configuration
+# This file demonstrates how to configure multiple HTTP transport binding instances
+
+httpTransports:
+  # Local development transport
+  - name: "local"
+    baseUrl: "http://localhost:8080"
+    timeoutMs: 30000
+    enableWebSockets: true
+    maxConnections: 10
+    retryAttempts: 3
+    retryDelayMs: 1000
+    enableCompression: true
+    enableLogging: true
+    customHeaders:
+      X-Client-Version: "1.0.0"
+      X-Environment: "development"
+
+  # Production API transport
+  - name: "production-api"
+    baseUrl: "https://api.example.com"
+    timeoutMs: 60000
+    enableWebSockets: true
+    maxConnections: 50
+    retryAttempts: 5
+    retryDelayMs: 2000
+    enableCompression: true
+    enableLogging: false
+    customHeaders:
+      X-API-Key: "${API_KEY}"
+      X-Client-Version: "1.0.0"
+      X-Environment: "production"
+
+  # Internal service transport
+  - name: "internal-service"
+    baseUrl: "https://internal.example.com"
+    timeoutMs: 45000
+    enableWebSockets: false
+    maxConnections: 20
+    retryAttempts: 3
+    retryDelayMs: 1500
+    enableCompression: true
+    enableLogging: true
+    customHeaders:
+      X-Internal-Token: "${INTERNAL_TOKEN}"
+      X-Service-Name: "spatial-web-node"
+
+  # WebSocket-only transport for real-time communication
+  - name: "realtime"
+    baseUrl: "wss://realtime.example.com"
+    timeoutMs: 30000
+    enableWebSockets: true
+    maxConnections: 100
+    retryAttempts: 3
+    retryDelayMs: 1000
+    enableCompression: true
+    enableLogging: true
+    customHeaders:
+      X-Client-Type: "realtime"
+      X-Connection-Type: "websocket" 

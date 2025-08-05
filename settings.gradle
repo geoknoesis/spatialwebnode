@@ -1,0 +1,12 @@
+rootProject.name = 'spatialweb'
+
+// Include all submodules
+include 'core'
+include 'common-utils'
+include 'identity'
+include 'node'
+include 'transport'
+include 'transport:http'
+include 'transport:graphql'
+include 'transport:p2p'
+include 'transport:mqtt' 

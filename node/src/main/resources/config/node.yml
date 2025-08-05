@@ -1,0 +1,23 @@
+nodeId: "did:spatialweb:node:example"
+name: "Spatial Web Node"
+version: "1.0.0"
+transports:
+  - "config/transports/http.yml"
+  - "config/transports/mqtt.yml"
+  - "config/transports/p2p.yml"
+logging:
+  level: "INFO"
+  file: "logs/spatialweb-node.log"
+  console: true
+  maxFileSize: "10MB"
+  maxFiles: 5
+metrics:
+  enabled: false
+  port: 8080
+  path: "/metrics"
+security:
+  tlsEnabled: false
+  certificatePath: null
+  keyPath: null
+  allowedOrigins:
+    - "*" 

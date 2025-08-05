@@ -1,0 +1,23 @@
+- name: "mqtt-local"
+  type: "mqtt"
+  enabled: true
+  config:
+    brokerUrl: "tcp://localhost:1883"
+    topicPrefix: "spatialweb/local"
+    cleanSession: true
+    connectionTimeout: 30
+    keepAliveInterval: 60
+    qos: 1
+    retainMessages: false
+
+- name: "mqtt-production"
+  type: "mqtt"
+  enabled: false
+  config:
+    brokerUrl: "tcp://mqtt.example.com:1883"
+    topicPrefix: "spatialweb/production"
+    cleanSession: true
+    connectionTimeout: 30
+    keepAliveInterval: 60
+    qos: 1
+    retainMessages: false 

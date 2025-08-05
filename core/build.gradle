@@ -1,0 +1,6 @@
+plugins {
+    id 'java'
+    alias(libs.plugins.kotlin.jvm)
+}
+
+apply from: '../gradle/build/core.gradle' 

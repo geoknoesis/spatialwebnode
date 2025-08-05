@@ -1,0 +1,18 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.geoknoesis.spatialweb'
+version = '1.0.0'
+
+java {
+    sourceCompatibility = '17'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // No dependencies
+} 

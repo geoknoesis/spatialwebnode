@@ -1,0 +1,144 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hstpd
+  labels:
+    app: hstpd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hstpd
+  template:
+    metadata:
+      labels:
+        app: hstpd
+    spec:
+      containers:
+      - name: hstpd
+                  image: hstpd:latest
+        ports:
+        - containerPort: 8080
+          name: http
+        - containerPort: 4001
+          name: p2p
+        - containerPort: 1883
+          name: mqtt
+        env:
+        - name: JAVA_OPTS
+          value: "-Xms512m -Xmx1g -XX:+UseG1GC"
+        - name: NODE_CONFIG_PATH
+          value: "/app/config/node.yml"
+        volumeMounts:
+        - name: config-volume
+          mountPath: /app/config
+        - name: logs-volume
+          mountPath: /app/logs
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "250m"
+          limits:
+            memory: "1Gi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 30
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+      volumes:
+      - name: config-volume
+        configMap:
+          name: hstpd-config
+      - name: logs-volume
+        emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hstpd-service
+  labels:
+    app: hstpd
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    targetPort: 8080
+    name: http
+  - port: 4001
+    targetPort: 4001
+    name: p2p
+  - port: 1883
+    targetPort: 1883
+    name: mqtt
+  selector:
+    app: hstpd
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hstpd-config
+data:
+  node.yml: |
+    nodeId: "did:hstp:node:k8s"
+    name: "hstpd (K8s)"
+    version: "1.0.0"
+    transports:
+      - "config/transports/http.yml"
+      - "config/transports/mqtt.yml"
+      - "config/transports/p2p.yml"
+    logging:
+      level: "INFO"
+      file: "logs/hstpd.log"
+      console: true
+      maxFileSize: "10MB"
+      maxFiles: 5
+    metrics:
+      enabled: true
+      port: 8080
+      path: "/metrics"
+    security:
+      tlsEnabled: false
+      certificatePath: null
+      keyPath: null
+      allowedOrigins:
+        - "*"
+  
+  http.yml: |
+    - name: "http-k8s"
+      type: "http"
+      enabled: true
+      config:
+        baseUrl: "http://0.0.0.0:8080"
+        timeoutMs: 30000
+        enableWebSockets: true
+  
+  mqtt.yml: |
+    - name: "mqtt-k8s"
+      type: "mqtt"
+      enabled: true
+      config:
+        brokerUrl: "tcp://mqtt-broker:1883"
+        topicPrefix: "spatialweb/k8s"
+        cleanSession: true
+        connectionTimeout: 30
+        keepAliveInterval: 60
+        qos: 1
+        retainMessages: false
+  
+  p2p.yml: |
+    - name: "p2p-k8s"
+      type: "p2p"
+      enabled: true
+      config:
+        port: 4001
+        discoveryEnabled: true
+        bootstrapPeers: []
+        enableMetrics: true 

@@ -1,0 +1,19 @@
+{
+  "resources": {
+    "includes": [
+      {
+        "pattern": "\\QMETA-INF/services/\\E.*"
+      },
+      {
+        "pattern": "\\Qlogback.xml\\E"
+      },
+      {
+        "pattern": "\\Qconfig/\\E.*"
+      },
+      {
+        "pattern": "\\Qtransports/\\E.*"
+      }
+    ]
+  },
+  "bundles": []
+} 

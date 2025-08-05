@@ -1,0 +1,49 @@
+# Multi-stage Dockerfile for building hstpd native image
+# Stage 1: Build the native image
+FROM ghcr.io/graalvm/graalvm-ce:latest AS builder
+
+# Install necessary packages
+RUN microdnf install -y gcc glibc-devel zlib-devel
+
+# Set working directory
+WORKDIR /app
+
+# Copy Gradle files
+COPY gradle/ gradle/
+COPY gradlew gradlew.bat build.gradle settings.gradle ./
+
+# Copy source code
+COPY core/ core/
+COPY identity/ identity/
+COPY transport/ transport/
+COPY node/ node/
+COPY common-utils/ common-utils/
+
+# Make gradlew executable
+RUN chmod +x gradlew
+
+# Build the native image
+RUN ./gradlew :node:nativeCompile
+
+# Stage 2: Runtime image
+FROM scratch
+
+# Copy the native binary
+COPY --from=builder /app/node/build/native/nativeCompile/hstpd /hstpd
+
+# Copy configuration files
+COPY --from=builder /app/node/src/main/resources/config/ /config/
+
+# Create logs directory
+VOLUME ["/logs"]
+
+# Expose ports
+EXPOSE 8080 4001 1883
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD ["/hstpd", "--version"] || exit 1
+
+# Run the application
+ENTRYPOINT ["/hstpd"]
+CMD ["--config", "/config/node.yml"] 

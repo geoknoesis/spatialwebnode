@@ -1,0 +1,64 @@
+version: '3.8'
+
+services:
+  spatialweb-node:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"  # HTTP
+      - "4001:4001"  # P2P
+      - "1883:1883"  # MQTT
+    volumes:
+      - ./config:/app/config:ro
+      - ./logs:/app/logs
+    environment:
+      - JAVA_OPTS=-Xms512m -Xmx1g -XX:+UseG1GC
+    depends_on:
+      - mqtt-broker
+    networks:
+      - spatialweb-network
+    restart: unless-stopped
+
+  mqtt-broker:
+    image: eclipse-mosquitto:2.0
+    ports:
+      - "1884:1883"
+      - "9001:9001"
+    volumes:
+      - ./mosquitto/config:/mosquitto/config:ro
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
+    networks:
+      - spatialweb-network
+    restart: unless-stopped
+
+  # Optional: Add a monitoring stack
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    networks:
+      - spatialweb-network
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana-storage:/var/lib/grafana
+    networks:
+      - spatialweb-network
+    restart: unless-stopped
+
+networks:
+  spatialweb-network:
+    driver: bridge
+
+volumes:
+  grafana-storage:

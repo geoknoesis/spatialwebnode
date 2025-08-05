@@ -1,0 +1,66 @@
+# Sample P2P Transport Configuration
+# This file demonstrates how to configure P2P transport bindings for the Spatial Web Node
+
+# Local development configuration
+- name: "p2p-local"
+  listenAddresses:
+    - "/ip4/127.0.0.1/tcp/4001"
+  enableDiscovery: false
+  enablePubSub: true
+  enablePing: true
+  maxConnections: 10
+  connectionTimeoutMs: 10000
+  messageTimeoutMs: 5000
+  enableRelay: false
+  enableNAT: false
+  enableMetrics: false
+  enableCompression: true
+  enableLogging: true
+
+# Test network configuration
+- name: "p2p-testnet"
+  listenAddresses:
+    - "/ip4/0.0.0.0/tcp/4001"
+    - "/ip6/::/tcp/4001"
+  bootstrapPeers:
+    - "/dnsaddr/bootstrap.libp2p.io/p2p/QmNnooDu7bfjPFoTZYxMNLWUQJyrVwtbZg5gBMjTezGAJN"
+    - "/dnsaddr/bootstrap.libp2p.io/p2p/QmQCU2EcMqAqQPR2i9bChDtGNJchTbq5TbXJJ16u19uLTa"
+    - "/dnsaddr/bootstrap.libp2p.io/p2p/QmbLHAnMoJPWSCR5Zhtx6BHJX9KiKNN6tpvbUcqanj75Nb"
+  enableDiscovery: true
+  enablePubSub: true
+  enablePing: true
+  maxConnections: 200
+  connectionTimeoutMs: 30000
+  messageTimeoutMs: 10000
+  enableRelay: true
+  enableNAT: true
+  enableMetrics: true
+  enableCompression: true
+  enableLogging: true
+
+# Production configuration
+- name: "p2p-production"
+  listenAddresses:
+    - "/ip4/0.0.0.0/tcp/4001"
+    - "/ip6/::/tcp/4001"
+    - "/ip4/0.0.0.0/udp/4001/quic"
+  bootstrapPeers:
+    - "/dnsaddr/bootstrap.libp2p.io/p2p/QmNnooDu7bfjPFoTZYxMNLWUQJyrVwtbZg5gBMjTezGAJN"
+    - "/dnsaddr/bootstrap.libp2p.io/p2p/QmQCU2EcMqAqQPR2i9bChDtGNJchTbq5TbXJJ16u19uLTa"
+    - "/dnsaddr/bootstrap.libp2p.io/p2p/QmbLHAnMoJPWSCR5Zhtx6BHJX9KiKNN6tpvbUcqanj75Nb"
+    - "/dnsaddr/bootstrap.libp2p.io/p2p/QmcZf59bWwK5XFi76CZX8cbJ4BhTzzA3gU1ZjYZcYW3dwt"
+  enableDiscovery: true
+  enablePubSub: true
+  enablePing: true
+  maxConnections: 500
+  connectionTimeoutMs: 60000
+  messageTimeoutMs: 30000
+  enableRelay: true
+  enableNAT: true
+  enableMetrics: true
+  privateKeyPath: "/path/to/private/key"
+  enableCompression: true
+  enableLogging: true
+  customProtocols:
+    - "/spatialweb/hstp/1.0.0"
+    - "/spatialweb/did/1.0.0" 

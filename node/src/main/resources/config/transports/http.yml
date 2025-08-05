@@ -1,0 +1,15 @@
+- name: "http-local"
+  type: "http"
+  enabled: true
+  config:
+    baseUrl: "http://localhost:8080"
+    timeoutMs: 30000
+    enableWebSockets: true
+
+- name: "http-production"
+  type: "http"
+  enabled: false
+  config:
+    baseUrl: "https://api.example.com"
+    timeoutMs: 60000
+    enableWebSockets: true 

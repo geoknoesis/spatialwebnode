@@ -1,0 +1,8 @@
+plugins {
+    id 'java'
+    alias(libs.plugins.kotlin.jvm)
+    id 'application'
+    alias(libs.plugins.native)
+}
+
+apply from: '../gradle/build/node.gradle'

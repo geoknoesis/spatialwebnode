@@ -1,0 +1,81 @@
+# Sample MQTT Transport Configuration
+# This file demonstrates how to configure MQTT transport bindings for the Spatial Web Node
+
+# Local development configuration
+- name: "mqtt-local"
+  brokerUrl: "tcp://localhost:1883"
+  topicPrefix: "spatialweb/local"
+  cleanSession: true
+  connectionTimeout: 30
+  keepAliveInterval: 60
+  qos: 1
+  retainMessages: false
+  enableLogging: true
+  enableMetrics: false
+
+# Test network configuration
+- name: "mqtt-testnet"
+  brokerUrl: "tcp://test.mosquitto.org:1883"
+  topicPrefix: "spatialweb/testnet"
+  cleanSession: true
+  connectionTimeout: 30
+  keepAliveInterval: 60
+  maxInflight: 1000
+  automaticReconnect: true
+  maxReconnectDelay: 10000
+  qos: 1
+  retainMessages: false
+  enableLogging: true
+  enableMetrics: false
+
+# Production configuration
+- name: "mqtt-production"
+  brokerUrl: "tcp://mqtt.example.com:1883"
+  clientId: "spatialweb-prod-001"
+  username: "spatialweb"
+  password: "secure_password"
+  topicPrefix: "spatialweb/prod"
+  cleanSession: false
+  connectionTimeout: 60
+  keepAliveInterval: 120
+  maxInflight: 2000
+  automaticReconnect: true
+  maxReconnectDelay: 30000
+  qos: 2
+  retainMessages: false
+  enableTLS: true
+  tlsVersion: "TLSv1.3"
+  enableLogging: true
+  enableMetrics: true
+  customProperties:
+    "com.ibm.ssl.protocol": "TLSv1.3"
+    "com.ibm.ssl.trustStore": "/path/to/truststore.jks"
+    "com.ibm.ssl.trustStorePassword": "truststore_password"
+
+# WebSocket configuration for browser clients
+- name: "mqtt-websocket"
+  brokerUrl: "ws://localhost:9001"
+  topicPrefix: "spatialweb/ws"
+  cleanSession: true
+  connectionTimeout: 30
+  keepAliveInterval: 60
+  qos: 1
+  retainMessages: false
+  enableLogging: true
+  enableMetrics: false
+
+# Secure WebSocket configuration
+- name: "mqtt-wss"
+  brokerUrl: "wss://mqtt.example.com:8883"
+  username: "spatialweb"
+  password: "secure_password"
+  topicPrefix: "spatialweb/wss"
+  cleanSession: false
+  connectionTimeout: 60
+  keepAliveInterval: 120
+  qos: 2
+  retainMessages: false
+  enableTLS: true
+  tlsVersion: "TLSv1.3"
+  enableLogging: true
+  enableMetrics: true 
