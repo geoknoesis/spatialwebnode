@@ -43,7 +43,7 @@ Download from [Gradle releases](https://gradle.org/releases/) and add to your PA
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/your-org/spatialwebnode.git
+git clone https://github.com/geoknoesis/spatialwebnode.git
 cd spatialwebnode
 ```
 
@@ -97,4 +97,4 @@ If you encounter issues during installation:
    chmod +x gradlew
    ```
 
-For more help, see the [Troubleshooting Guide](../deployment/troubleshooting.md) or [open an issue](https://github.com/your-org/spatialwebnode/issues). 
+For more help, see the [Troubleshooting Guide](../deployment/troubleshooting.md) or [open an issue](https://github.com/geoknoesis/spatialwebnode/issues). 
