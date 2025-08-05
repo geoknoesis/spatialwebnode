@@ -1,6 +1,6 @@
 # hstpd Documentation
 
-Welcome to the official documentation for **hstpd** - the HSTP (Hypermedia Spatial Transport Protocol) daemon.
+Welcome to the official documentation for **hstpd** - the HSTP (Hypermedia Spatial Transport Protocol) daemon, developed by [Geoknoesis LLC](https://www.geoknoesis.com).
 
 ## What is hstpd?
 
@@ -48,4 +48,12 @@ cd spatialwebnode
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](../LICENSE) file for details. 
+This project is licensed under the MIT License - see the [LICENSE](../LICENSE) file for details.
+
+## About Geoknoesis LLC
+
+**hstpd** is developed and maintained by [Geoknoesis LLC](https://www.geoknoesis.com), a company specializing in spatial computing and distributed systems.
+
+**Main Developer**: Stephane Fellah (stephanef@geoknoesis.com)
+
+For more information about our products and services, visit [www.geoknoesis.com](https://www.geoknoesis.com). 

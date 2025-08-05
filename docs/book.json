@@ -47,6 +47,10 @@
   "variables": {
     "version": "1.0.0",
     "project_name": "hstpd",
-    "full_name": "HSTP (Hypermedia Spatial Transport Protocol) daemon"
+    "full_name": "HSTP (Hypermedia Spatial Transport Protocol) daemon",
+    "company": "Geoknoesis LLC",
+    "company_url": "https://www.geoknoesis.com",
+    "developer": "Stephane Fellah",
+    "developer_email": "stephanef@geoknoesis.com"
   }
 } 

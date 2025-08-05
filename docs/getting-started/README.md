@@ -1,6 +1,6 @@
 # Getting Started with hstpd
 
-Welcome to hstpd! This guide will help you get up and running with the HSTP (Hypermedia Spatial Transport Protocol) daemon.
+Welcome to hstpd! This guide will help you get up and running with the HSTP (Hypermedia Spatial Transport Protocol) daemon, developed by [Geoknoesis LLC](https://www.geoknoesis.com).
 
 ## Prerequisites
 

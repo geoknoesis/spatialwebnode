@@ -28,6 +28,12 @@ RUN ./gradlew :node:nativeCompile
 # Stage 2: Runtime image
 FROM scratch
 
+# Add company information
+LABEL maintainer="Stephane Fellah <stephanef@geoknoesis.com>"
+LABEL org.opencontainers.image.vendor="Geoknoesis LLC"
+LABEL org.opencontainers.image.url="https://www.geoknoesis.com"
+LABEL org.opencontainers.image.authors="Stephane Fellah <stephanef@geoknoesis.com>"
+
 # Copy the native binary
 COPY --from=builder /app/node/build/native/nativeCompile/hstpd /hstpd
 

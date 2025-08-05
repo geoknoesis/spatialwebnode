@@ -9,6 +9,12 @@ RUN apt-get update && apt-get install -y \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
+# Add company information
+LABEL maintainer="Stephane Fellah <stephanef@geoknoesis.com>"
+LABEL org.opencontainers.image.vendor="Geoknoesis LLC"
+LABEL org.opencontainers.image.url="https://www.geoknoesis.com"
+LABEL org.opencontainers.image.authors="Stephane Fellah <stephanef@geoknoesis.com>"
+
 # Create non-root user
 RUN groupadd -r hstpd && useradd -r -g hstpd hstpd
 

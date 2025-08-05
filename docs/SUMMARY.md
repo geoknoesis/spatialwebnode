@@ -1,6 +1,8 @@
 # Table of contents
 
 * [Introduction](README.md)
+* [About Geoknoesis LLC](about/geoknoesis.md)
+* [Main Developer](about/developer.md)
 
 ## Getting Started
 

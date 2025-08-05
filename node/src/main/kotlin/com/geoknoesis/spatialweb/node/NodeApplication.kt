@@ -92,6 +92,7 @@ object NodeApplication {
     private fun printUsage() {
         println("""
             hstpd - HSTP (Hypermedia Spatial Transport Protocol) daemon
+            Developed by Geoknoesis LLC (https://www.geoknoesis.com)
             
             Usage: hstpd [options]
             
@@ -112,6 +113,8 @@ object NodeApplication {
      */
     private fun printVersion() {
         println("hstpd v1.0.0")
+        println("Developed by Geoknoesis LLC (https://www.geoknoesis.com)")
+        println("Main Developer: Stephane Fellah (stephanef@geoknoesis.com)")
         println("Built with Kotlin ${KotlinVersion.CURRENT}")
         println("JVM ${System.getProperty("java.version")}")
     }

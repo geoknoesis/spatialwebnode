@@ -1,6 +1,6 @@
 # hstpd
 
-**hstpd** is a distributed spatial computing node implementing the Hypermedia Spatial Transport Protocol (HSTP).
+**hstpd** is a distributed spatial computing node implementing the Hypermedia Spatial Transport Protocol (HSTP), developed by [Geoknoesis LLC](https://www.geoknoesis.com).
 
 ## 📚 Documentation
 
@@ -179,6 +179,14 @@ cd spatialwebnode
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🏢 About Geoknoesis LLC
+
+**hstpd** is developed and maintained by [Geoknoesis LLC](https://www.geoknoesis.com), a company specializing in spatial computing and distributed systems.
+
+**Main Developer**: Stephane Fellah (stephanef@geoknoesis.com)
+
+For more information about our products and services, visit [www.geoknoesis.com](https://www.geoknoesis.com).
 
 ## 🆘 Support
 

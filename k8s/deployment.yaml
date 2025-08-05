@@ -4,6 +4,9 @@ metadata:
   name: hstpd
   labels:
     app: hstpd
+    vendor: "geoknoesis"
+    maintainer: "Stephane Fellah"
+    developer: "stephanef@geoknoesis.com"
 spec:
   replicas: 1
   selector:
