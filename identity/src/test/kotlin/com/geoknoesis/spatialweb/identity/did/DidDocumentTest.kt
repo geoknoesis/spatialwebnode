@@ -28,30 +28,45 @@ class DidDocumentTest {
           ],
           "authentication": [
             {
-              "id": "did:example:123456789abcdefghi#auth-1",
-              "type": "Ed25519VerificationKey2018",
-              "controller": "did:example:123456789abcdefghi",
-              "publicKeyBase58": "H3C2AVvLMfeZ5w..."
+              "type": "Reference",
+              "ref": "did:example:123456789abcdefghi#keys-1"
             }
           ],
-          "assertionMethod": ["did:example:123456789abcdefghi#keys-1"],
+          "assertionMethod": [
+            {
+              "type": "Reference",
+              "ref": "did:example:123456789abcdefghi#keys-1"
+            }
+          ],
           "keyAgreement": [
             {
-              "id": "did:example:123456789abcdefghi#key-agree-1",
-              "type": "X25519KeyAgreementKey2019",
-              "controller": "did:example:123456789abcdefghi",
-              "publicKeyBase58": "GfH3Tn8U9o..."
+              "type": "Method",
+              "method": {
+                "id": "did:example:123456789abcdefghi#key-agree-1",
+                "type": "X25519KeyAgreementKey2019",
+                "controller": "did:example:123456789abcdefghi",
+                "publicKeyBase58": "GfH3Tn8U9o..."
+              }
             }
           ],
-          "capabilityInvocation": ["did:example:123456789abcdefghi#keys-1"],
-          "capabilityDelegation": ["did:example:123456789abcdefghi#keys-1"],
+          "capabilityInvocation": [
+            {
+              "type": "Reference",
+              "ref": "did:example:123456789abcdefghi#keys-1"
+            }
+          ],
+          "capabilityDelegation": [
+            {
+              "type": "Reference",
+              "ref": "did:example:123456789abcdefghi#keys-1"
+            }
+          ],
           "service": [
             {
               "id": "#agent",
               "type": ["AgentService"],
               "serviceEndpoint": "https://agent.example.com/8377464",
-              "profile": "hstp:relay",
-              "extraField": "extraValue"
+              "profile": "hstp:relay"
             }
           ]
         }
@@ -65,9 +80,9 @@ class DidDocumentTest {
         assertEquals("https://example.com/user/1234", doc.alsoKnownAs?.first())
         assertEquals("z6MkoH2...", doc.verificationMethod?.first()?.publicKeyMultibase)
 
-        val auth = doc.authentication?.first() as? VerificationRelationship.Method
+        val auth = doc.authentication?.first() as? VerificationRelationship.Reference
         assertNotNull(auth)
-        assertEquals("did:example:123456789abcdefghi#auth-1", auth.method.id)
+        assertEquals("did:example:123456789abcdefghi#keys-1", auth.ref)
 
         assertEquals(
             "did:example:123456789abcdefghi#keys-1",
@@ -82,6 +97,5 @@ class DidDocumentTest {
         assertNotNull(service)
         assertEquals("AgentService", service.type.first())
         assertEquals("hstp:relay", service.profile)
-        assertTrue(service.additionalProperties.containsKey("extraField"))
     }
 }

@@ -1,0 +1,475 @@
+package com.geoknoesis.rdf
+
+/**
+ * Base interface for vocabulary entries
+ */
+interface Vocabulary {
+    val iri: String
+    
+    /**
+     * Get the IRI as an IRI object
+     */
+    fun toIRI(): IRI = IRI(iri)
+    
+    /**
+     * Get the local name (part after the last # or /)
+     */
+    val localName: String
+        get() = iri.substringAfterLast('#').substringAfterLast('/')
+    
+    /**
+     * Get the namespace (part before the last # or /)
+     */
+    val namespace: String
+        get() = iri.substringBeforeLast('#').substringBeforeLast('/')
+}
+
+/**
+ * Base enum for vocabulary implementations
+ */
+abstract class VocabularyEnum(override val iri: String) : Vocabulary {
+    override fun toString(): String = "${this::class.simpleName}.${name}"
+}
+
+/**
+ * XSD Datatypes as enum
+ */
+@Suppress("EnumEntryName", "unused")
+enum class XSD(override val iri: String, private val _code: Int) : Vocabulary {
+    // String types
+    string("http://www.w3.org/2001/XMLSchema#string", 1),
+    normalizedString("http://www.w3.org/2001/XMLSchema#normalizedString", 2),
+    token("http://www.w3.org/2001/XMLSchema#token", 3),
+    language("http://www.w3.org/2001/XMLSchema#language", 4),
+    Name("http://www.w3.org/2001/XMLSchema#Name", 5),
+    NCName("http://www.w3.org/2001/XMLSchema#NCName", 6),
+    QName("http://www.w3.org/2001/XMLSchema#QName", 7),
+    anyURI("http://www.w3.org/2001/XMLSchema#anyURI", 8),
+    
+    // Boolean
+    boolean("http://www.w3.org/2001/XMLSchema#boolean", 9),
+    
+    // Numeric types
+    byte("http://www.w3.org/2001/XMLSchema#byte", 10),
+    short("http://www.w3.org/2001/XMLSchema#short", 11),
+    int("http://www.w3.org/2001/XMLSchema#int", 12),
+    long("http://www.w3.org/2001/XMLSchema#long", 13),
+    integer("http://www.w3.org/2001/XMLSchema#integer", 14),
+    decimal("http://www.w3.org/2001/XMLSchema#decimal", 15),
+    float("http://www.w3.org/2001/XMLSchema#float", 16),
+    double("http://www.w3.org/2001/XMLSchema#double", 17),
+    
+    // Date/Time types
+    date("http://www.w3.org/2001/XMLSchema#date", 18),
+    time("http://www.w3.org/2001/XMLSchema#time", 19),
+    dateTime("http://www.w3.org/2001/XMLSchema#dateTime", 20),
+    duration("http://www.w3.org/2001/XMLSchema#duration", 21),
+    gYear("http://www.w3.org/2001/XMLSchema#gYear", 22),
+    gMonth("http://www.w3.org/2001/XMLSchema#gMonth", 23),
+    gDay("http://www.w3.org/2001/XMLSchema#gDay", 24),
+    gYearMonth("http://www.w3.org/2001/XMLSchema#gYearMonth", 25),
+    gMonthDay("http://www.w3.org/2001/XMLSchema#gMonthDay", 26),
+    yearMonthDuration("http://www.w3.org/2001/XMLSchema#yearMonthDuration", 27),
+    dayTimeDuration("http://www.w3.org/2001/XMLSchema#dayTimeDuration", 28),
+    
+    // Binary types
+    hexBinary("http://www.w3.org/2001/XMLSchema#hexBinary", 29),
+    base64Binary("http://www.w3.org/2001/XMLSchema#base64Binary", 30);
+
+    companion object {
+        const val NAMESPACE = "http://www.w3.org/2001/XMLSchema#"
+        
+        /**
+         * Find XSD type by local name
+         */
+        fun fromLocalName(localName: String): XSD? {
+            return values().find { it.localName == localName }
+        }
+        
+        /**
+         * Find XSD type by IRI
+         */
+        fun fromIRI(iri: String): XSD? {
+            return values().find { it.iri == iri }
+        }
+    }
+    
+    val code: Int get() = _code
+    
+    override fun toString(): String = "XSD.${name}"
+}
+
+/**
+ * RDF Core vocabulary as enum
+ */
+@Suppress("EnumEntryName", "unused")
+enum class RDF(override val iri: String) : Vocabulary {
+    type("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"),
+    langString("http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"),
+    subject("http://www.w3.org/1999/02/22-rdf-syntax-ns#subject"),
+    predicate("http://www.w3.org/1999/02/22-rdf-syntax-ns#predicate"),
+    object_("http://www.w3.org/1999/02/22-rdf-syntax-ns#object"),
+    statement("http://www.w3.org/1999/02/22-rdf-syntax-ns#Statement"),
+    bag("http://www.w3.org/1999/02/22-rdf-syntax-ns#Bag"),
+    seq("http://www.w3.org/1999/02/22-rdf-syntax-ns#Seq"),
+    alt("http://www.w3.org/1999/02/22-rdf-syntax-ns#Alt"),
+    first("http://www.w3.org/1999/02/22-rdf-syntax-ns#first"),
+    rest("http://www.w3.org/1999/02/22-rdf-syntax-ns#rest"),
+    nil("http://www.w3.org/1999/02/22-rdf-syntax-ns#nil"),
+    value("http://www.w3.org/1999/02/22-rdf-syntax-ns#value"),
+    list("http://www.w3.org/1999/02/22-rdf-syntax-ns#List"),
+    Property("http://www.w3.org/1999/02/22-rdf-syntax-ns#Property"),
+    XMLLiteral("http://www.w3.org/1999/02/22-rdf-syntax-ns#XMLLiteral"),
+    HTML("http://www.w3.org/1999/02/22-rdf-syntax-ns#HTML"),
+    PlainLiteral("http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral");
+
+    companion object {
+        const val NAMESPACE = "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+        
+        fun fromLocalName(localName: String): RDF? {
+            return values().find { it.localName == localName }
+        }
+        
+        fun fromIRI(iri: String): RDF? {
+            return values().find { it.iri == iri }
+        }
+    }
+    
+    override fun toString(): String = "RDF.${name}"
+}
+
+/**
+ * RDFS vocabulary as enum
+ */
+@Suppress("EnumEntryName", "unused")
+enum class RDFS(override val iri: String) : Vocabulary {
+    label("http://www.w3.org/2000/01/rdf-schema#label"),
+    comment("http://www.w3.org/2000/01/rdf-schema#comment"),
+    seeAlso("http://www.w3.org/2000/01/rdf-schema#seeAlso"),
+    isDefinedBy("http://www.w3.org/2000/01/rdf-schema#isDefinedBy"),
+    member("http://www.w3.org/2000/01/rdf-schema#member"),
+    domain("http://www.w3.org/2000/01/rdf-schema#domain"),
+    range("http://www.w3.org/2000/01/rdf-schema#range"),
+    subClassOf("http://www.w3.org/2000/01/rdf-schema#subClassOf"),
+    subPropertyOf("http://www.w3.org/2000/01/rdf-schema#subPropertyOf"),
+    Class("http://www.w3.org/2000/01/rdf-schema#Class"),
+    Resource("http://www.w3.org/2000/01/rdf-schema#Resource"),
+    Literal("http://www.w3.org/2000/01/rdf-schema#Literal"),
+    Container("http://www.w3.org/2000/01/rdf-schema#Container"),
+    ContainerMembershipProperty("http://www.w3.org/2000/01/rdf-schema#ContainerMembershipProperty"),
+    Datatype("http://www.w3.org/2000/01/rdf-schema#Datatype");
+
+    companion object {
+        const val NAMESPACE = "http://www.w3.org/2000/01/rdf-schema#"
+        
+        fun fromLocalName(localName: String): RDFS? {
+            return values().find { it.localName == localName }
+        }
+        
+        fun fromIRI(iri: String): RDFS? {
+            return values().find { it.iri == iri }
+        }
+    }
+    
+    override fun toString(): String = "RDFS.${name}"
+}
+
+/**
+ * OWL vocabulary as enum
+ */
+@Suppress("EnumEntryName", "unused")
+enum class OWL(override val iri: String) : Vocabulary {
+    Class("http://www.w3.org/2002/07/owl#Class"),
+    ObjectProperty("http://www.w3.org/2002/07/owl#ObjectProperty"),
+    DatatypeProperty("http://www.w3.org/2002/07/owl#DatatypeProperty"),
+    AnnotationProperty("http://www.w3.org/2002/07/owl#AnnotationProperty"),
+    Ontology("http://www.w3.org/2002/07/owl#Ontology"),
+    Thing("http://www.w3.org/2002/07/owl#Thing"),
+    Nothing("http://www.w3.org/2002/07/owl#Nothing"),
+    equivalentClass("http://www.w3.org/2002/07/owl#equivalentClass"),
+    equivalentProperty("http://www.w3.org/2002/07/owl#equivalentProperty"),
+    sameAs("http://www.w3.org/2002/07/owl#sameAs"),
+    differentFrom("http://www.w3.org/2002/07/owl#differentFrom"),
+    AllDifferent("http://www.w3.org/2002/07/owl#AllDifferent"),
+    distinctMembers("http://www.w3.org/2002/07/owl#distinctMembers"),
+    unionOf("http://www.w3.org/2002/07/owl#unionOf"),
+    intersectionOf("http://www.w3.org/2002/07/owl#intersectionOf"),
+    complementOf("http://www.w3.org/2002/07/owl#complementOf"),
+    oneOf("http://www.w3.org/2002/07/owl#oneOf"),
+    hasValue("http://www.w3.org/2002/07/owl#hasValue"),
+    someValuesFrom("http://www.w3.org/2002/07/owl#someValuesFrom"),
+    allValuesFrom("http://www.w3.org/2002/07/owl#allValuesFrom"),
+    minCardinality("http://www.w3.org/2002/07/owl#minCardinality"),
+    maxCardinality("http://www.w3.org/2002/07/owl#maxCardinality"),
+    cardinality("http://www.w3.org/2002/07/owl#cardinality"),
+    inverseOf("http://www.w3.org/2002/07/owl#inverseOf"),
+    TransitiveProperty("http://www.w3.org/2002/07/owl#TransitiveProperty"),
+    SymmetricProperty("http://www.w3.org/2002/07/owl#SymmetricProperty"),
+    FunctionalProperty("http://www.w3.org/2002/07/owl#FunctionalProperty"),
+    InverseFunctionalProperty("http://www.w3.org/2002/07/owl#InverseFunctionalProperty"),
+    ReflexiveProperty("http://www.w3.org/2002/07/owl#ReflexiveProperty"),
+    IrreflexiveProperty("http://www.w3.org/2002/07/owl#IrreflexiveProperty"),
+    AsymmetricProperty("http://www.w3.org/2002/07/owl#AsymmetricProperty"),
+    Restriction("http://www.w3.org/2002/07/owl#Restriction"),
+    onProperty("http://www.w3.org/2002/07/owl#onProperty"),
+    DataRange("http://www.w3.org/2002/07/owl#DataRange"),
+    versionInfo("http://www.w3.org/2002/07/owl#versionInfo"),
+    priorVersion("http://www.w3.org/2002/07/owl#priorVersion"),
+    backwardCompatibleWith("http://www.w3.org/2002/07/owl#backwardCompatibleWith"),
+    incompatibleWith("http://www.w3.org/2002/07/owl#incompatibleWith"),
+    imports("http://www.w3.org/2002/07/owl#imports"),
+    deprecatedClass("http://www.w3.org/2002/07/owl#deprecatedClass"),
+    deprecatedProperty("http://www.w3.org/2002/07/owl#deprecatedProperty");
+
+    companion object {
+        const val NAMESPACE = "http://www.w3.org/2002/07/owl#"
+        
+        fun fromLocalName(localName: String): OWL? {
+            return values().find { it.localName == localName }
+        }
+        
+        fun fromIRI(iri: String): OWL? {
+            return values().find { it.iri == iri }
+        }
+    }
+    
+    override fun toString(): String = "OWL.${name}"
+}
+
+/**
+ * SHACL vocabulary as enum
+ */
+@Suppress("EnumEntryName", "unused")
+enum class SHACL(override val iri: String) : Vocabulary {
+    NodeShape("http://www.w3.org/ns/shacl#NodeShape"),
+    PropertyShape("http://www.w3.org/ns/shacl#PropertyShape"),
+    targetClass("http://www.w3.org/ns/shacl#targetClass"),
+    targetNode("http://www.w3.org/ns/shacl#targetNode"),
+    targetObjectsOf("http://www.w3.org/ns/shacl#targetObjectsOf"),
+    targetSubjectsOf("http://www.w3.org/ns/shacl#targetSubjectsOf"),
+    property("http://www.w3.org/ns/shacl#property"),
+    path("http://www.w3.org/ns/shacl#path"),
+    class_("http://www.w3.org/ns/shacl#class"),
+    datatype("http://www.w3.org/ns/shacl#datatype"),
+    nodeKind("http://www.w3.org/ns/shacl#nodeKind"),
+    minCount("http://www.w3.org/ns/shacl#minCount"),
+    maxCount("http://www.w3.org/ns/shacl#maxCount"),
+    minLength("http://www.w3.org/ns/shacl#minLength"),
+    maxLength("http://www.w3.org/ns/shacl#maxLength"),
+    pattern("http://www.w3.org/ns/shacl#pattern"),
+    flags("http://www.w3.org/ns/shacl#flags"),
+    languageIn("http://www.w3.org/ns/shacl#languageIn"),
+    uniqueLang("http://www.w3.org/ns/shacl#uniqueLang"),
+    equals("http://www.w3.org/ns/shacl#equals"),
+    disjoint("http://www.w3.org/ns/shacl#disjoint"),
+    lessThan("http://www.w3.org/ns/shacl#lessThan"),
+    lessThanOrEquals("http://www.w3.org/ns/shacl#lessThanOrEquals"),
+    not("http://www.w3.org/ns/shacl#not"),
+    and("http://www.w3.org/ns/shacl#and"),
+    or("http://www.w3.org/ns/shacl#or"),
+    xone("http://www.w3.org/ns/shacl#xone"),
+    hasValue("http://www.w3.org/ns/shacl#hasValue"),
+    in("http://www.w3.org/ns/shacl#in"),
+    minInclusive("http://www.w3.org/ns/shacl#minInclusive"),
+    maxInclusive("http://www.w3.org/ns/shacl#maxInclusive"),
+    minExclusive("http://www.w3.org/ns/shacl#minExclusive"),
+    maxExclusive("http://www.w3.org/ns/shacl#maxExclusive"),
+    closed("http://www.w3.org/ns/shacl#closed"),
+    ignoredProperties("http://www.w3.org/ns/shacl#ignoredProperties"),
+    severity("http://www.w3.org/ns/shacl#severity"),
+    message("http://www.w3.org/ns/shacl#message"),
+    result("http://www.w3.org/ns/shacl#result"),
+    ValidationReport("http://www.w3.org/ns/shacl#ValidationReport"),
+    ValidationResult("http://www.w3.org/ns/shacl#ValidationResult"),
+    conforms("http://www.w3.org/ns/shacl#conforms"),
+    resultSeverity("http://www.w3.org/ns/shacl#resultSeverity"),
+    resultMessage("http://www.w3.org/ns/shacl#resultMessage"),
+    resultPath("http://www.w3.org/ns/shacl#resultPath"),
+    resultValue("http://www.w3.org/ns/shacl#resultValue"),
+    resultFocusNode("http://www.w3.org/ns/shacl#resultFocusNode"),
+    resultSubject("http://www.w3.org/ns/shacl#resultSubject"),
+    resultPredicate("http://www.w3.org/ns/shacl#resultPredicate"),
+    resultObject("http://www.w3.org/ns/shacl#resultObject"),
+    resultSourceConstraintComponent("http://www.w3.org/ns/shacl#resultSourceConstraintComponent"),
+    resultSourceShape("http://www.w3.org/ns/shacl#resultSourceShape"),
+    Info("http://www.w3.org/ns/shacl#Info"),
+    Warning("http://www.w3.org/ns/shacl#Warning"),
+    Violation("http://www.w3.org/ns/shacl#Violation");
+
+    companion object {
+        const val NAMESPACE = "http://www.w3.org/ns/shacl#"
+        
+        fun fromLocalName(localName: String): SHACL? {
+            return values().find { it.localName == localName }
+        }
+        
+        fun fromIRI(iri: String): SHACL? {
+            return values().find { it.iri == iri }
+        }
+    }
+    
+    override fun toString(): String = "SHACL.${name}"
+}
+
+/**
+ * SKOS vocabulary as enum
+ */
+@Suppress("EnumEntryName", "unused")
+enum class SKOS(override val iri: String) : Vocabulary {
+    Concept("http://www.w3.org/2004/02/skos/core#Concept"),
+    ConceptScheme("http://www.w3.org/2004/02/skos/core#ConceptScheme"),
+    Collection("http://www.w3.org/2004/02/skos/core#Collection"),
+    OrderedCollection("http://www.w3.org/2004/02/skos/core#OrderedCollection"),
+    inScheme("http://www.w3.org/2004/02/skos/core#inScheme"),
+    hasTopConcept("http://www.w3.org/2004/02/skos/core#hasTopConcept"),
+    topConceptOf("http://www.w3.org/2004/02/skos/core#topConceptOf"),
+    prefLabel("http://www.w3.org/2004/02/skos/core#prefLabel"),
+    altLabel("http://www.w3.org/2004/02/skos/core#altLabel"),
+    hiddenLabel("http://www.w3.org/2004/02/skos/core#hiddenLabel"),
+    notation("http://www.w3.org/2004/02/skos/core#notation"),
+    note("http://www.w3.org/2004/02/skos/core#note"),
+    changeNote("http://www.w3.org/2004/02/skos/core#changeNote"),
+    definition("http://www.w3.org/2004/02/skos/core#definition"),
+    editorialNote("http://www.w3.org/2004/02/skos/core#editorialNote"),
+    example("http://www.w3.org/2004/02/skos/core#example"),
+    historyNote("http://www.w3.org/2004/02/skos/core#historyNote"),
+    scopeNote("http://www.w3.org/2004/02/skos/core#scopeNote"),
+    semanticRelation("http://www.w3.org/2004/02/skos/core#semanticRelation"),
+    broader("http://www.w3.org/2004/02/skos/core#broader"),
+    broaderTransitive("http://www.w3.org/2004/02/skos/core#broaderTransitive"),
+    narrower("http://www.w3.org/2004/02/skos/core#narrower"),
+    narrowerTransitive("http://www.w3.org/2004/02/skos/core#narrowerTransitive"),
+    related("http://www.w3.org/2004/02/skos/core#related"),
+    broaderMatch("http://www.w3.org/2004/02/skos/core#broaderMatch"),
+    narrowerMatch("http://www.w3.org/2004/02/skos/core#narrowerMatch"),
+    relatedMatch("http://www.w3.org/2004/02/skos/core#relatedMatch"),
+    exactMatch("http://www.w3.org/2004/02/skos/core#exactMatch"),
+    closeMatch("http://www.w3.org/2004/02/skos/core#closeMatch"),
+    mappingRelation("http://www.w3.org/2004/02/skos/core#mappingRelation"),
+    member("http://www.w3.org/2004/02/skos/core#member"),
+    memberList("http://www.w3.org/2004/02/skos/core#memberList");
+
+    companion object {
+        const val NAMESPACE = "http://www.w3.org/2004/02/skos/core#"
+        
+        fun fromLocalName(localName: String): SKOS? {
+            return values().find { it.localName == localName }
+        }
+        
+        fun fromIRI(iri: String): SKOS? {
+            return values().find { it.iri == iri }
+        }
+    }
+    
+    override fun toString(): String = "SKOS.${name}"
+}
+
+/**
+ * DC (Dublin Core) vocabulary as enum
+ */
+@Suppress("EnumEntryName", "unused")
+enum class DC(override val iri: String) : Vocabulary {
+    title("http://purl.org/dc/elements/1.1/title"),
+    creator("http://purl.org/dc/elements/1.1/creator"),
+    subject("http://purl.org/dc/elements/1.1/subject"),
+    description("http://purl.org/dc/elements/1.1/description"),
+    publisher("http://purl.org/dc/elements/1.1/publisher"),
+    contributor("http://purl.org/dc/elements/1.1/contributor"),
+    date("http://purl.org/dc/elements/1.1/date"),
+    type("http://purl.org/dc/elements/1.1/type"),
+    format("http://purl.org/dc/elements/1.1/format"),
+    identifier("http://purl.org/dc/elements/1.1/identifier"),
+    source("http://purl.org/dc/elements/1.1/source"),
+    language("http://purl.org/dc/elements/1.1/language"),
+    relation("http://purl.org/dc/elements/1.1/relation"),
+    coverage("http://purl.org/dc/elements/1.1/coverage"),
+    rights("http://purl.org/dc/elements/1.1/rights");
+
+    companion object {
+        const val NAMESPACE = "http://purl.org/dc/elements/1.1/"
+        
+        fun fromLocalName(localName: String): DC? {
+            return values().find { it.localName == localName }
+        }
+        
+        fun fromIRI(iri: String): DC? {
+            return values().find { it.iri == iri }
+        }
+    }
+    
+    override fun toString(): String = "DC.${name}"
+}
+
+/**
+ * DCT (Dublin Core Terms) vocabulary as enum
+ */
+@Suppress("EnumEntryName", "unused")
+enum class DCT(override val iri: String) : Vocabulary {
+    title("http://purl.org/dc/terms/title"),
+    creator("http://purl.org/dc/terms/creator"),
+    subject("http://purl.org/dc/terms/subject"),
+    description("http://purl.org/dc/terms/description"),
+    publisher("http://purl.org/dc/terms/publisher"),
+    contributor("http://purl.org/dc/terms/contributor"),
+    date("http://purl.org/dc/terms/date"),
+    type("http://purl.org/dc/terms/type"),
+    format("http://purl.org/dc/terms/format"),
+    identifier("http://purl.org/dc/terms/identifier"),
+    source("http://purl.org/dc/terms/source"),
+    language("http://purl.org/dc/terms/language"),
+    relation("http://purl.org/dc/terms/relation"),
+    coverage("http://purl.org/dc/terms/coverage"),
+    rights("http://purl.org/dc/terms/rights"),
+    created("http://purl.org/dc/terms/created"),
+    modified("http://purl.org/dc/terms/modified"),
+    issued("http://purl.org/dc/terms/issued"),
+    available("http://purl.org/dc/terms/available"),
+    valid("http://purl.org/dc/terms/valid"),
+    isPartOf("http://purl.org/dc/terms/isPartOf"),
+    hasPart("http://purl.org/dc/terms/hasPart"),
+    isVersionOf("http://purl.org/dc/terms/isVersionOf"),
+    hasVersion("http://purl.org/dc/terms/hasVersion"),
+    isReplacedBy("http://purl.org/dc/terms/isReplacedBy"),
+    replaces("http://purl.org/dc/terms/replaces"),
+    isRequiredBy("http://purl.org/dc/terms/isRequiredBy"),
+    requires("http://purl.org/dc/terms/requires"),
+    isReferencedBy("http://purl.org/dc/terms/isReferencedBy"),
+    references("http://purl.org/dc/terms/references"),
+    conformsTo("http://purl.org/dc/terms/conformsTo"),
+    spatial("http://purl.org/dc/terms/spatial"),
+    temporal("http://purl.org/dc/terms/temporal"),
+    audience("http://purl.org/dc/terms/audience"),
+    educationLevel("http://purl.org/dc/terms/educationLevel"),
+    extent("http://purl.org/dc/terms/extent"),
+    medium("http://purl.org/dc/terms/medium"),
+    provenance("http://purl.org/dc/terms/provenance"),
+    rightsHolder("http://purl.org/dc/terms/rightsHolder"),
+    license("http://purl.org/dc/terms/license"),
+    accessRights("http://purl.org/dc/terms/accessRights"),
+    bibliographicCitation("http://purl.org/dc/terms/bibliographicCitation"),
+    abstract("http://purl.org/dc/terms/abstract"),
+    tableOfContents("http://purl.org/dc/terms/tableOfContents"),
+    alternative("http://purl.org/dc/terms/alternative"),
+    isFormatOf("http://purl.org/dc/terms/isFormatOf"),
+    hasFormat("http://purl.org/dc/terms/hasFormat"),
+    isTranslatedFrom("http://purl.org/dc/terms/isTranslatedFrom"),
+    isTranslationOf("http://purl.org/dc/terms/isTranslationOf"),
+    isAdaptedFrom("http://purl.org/dc/terms/isAdaptedFrom"),
+    isAdaptationOf("http://purl.org/dc/terms/isAdaptationOf"),
+    isBasedOn("http://purl.org/dc/terms/isBasedOn"),
+    isBasisFor("http://purl.org/dc/terms/isBasisFor");
+
+    companion object {
+        const val NAMESPACE = "http://purl.org/dc/terms/"
+        
+        fun fromLocalName(localName: String): DCT? {
+            return values().find { it.localName == localName }
+        }
+        
+        fun fromIRI(iri: String): DCT? {
+            return values().find { it.iri == iri }
+        }
+    }
+    
+    override fun toString(): String = "DCT.${name}"
+} 

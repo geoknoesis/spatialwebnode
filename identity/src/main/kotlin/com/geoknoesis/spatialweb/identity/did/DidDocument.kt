@@ -1,6 +1,7 @@
 package com.geoknoesis.spatialweb.identity.did
 
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
@@ -8,6 +9,9 @@ import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
+import kotlinx.serialization.modules.subclass
 import java.time.Instant
 
 /**
@@ -110,6 +114,7 @@ sealed class VerificationRelationship {
      * @property ref The reference string used for verification.
      */
     @Serializable
+    @SerialName("Reference")
     data class Reference(val ref: String) : VerificationRelationship()
 
     /**
@@ -122,6 +127,7 @@ sealed class VerificationRelationship {
      * @property method The verification method associated with this relationship
      */
     @Serializable
+    @SerialName("Method")
     data class Method(val method: VerificationMethod) : VerificationRelationship()
 }
 
@@ -150,7 +156,16 @@ data class ServiceEndpoint(
 
 
 
-private val jsonFormat = Json { ignoreUnknownKeys = true }
+private val jsonFormat = Json { 
+    ignoreUnknownKeys = true
+    classDiscriminator = "type"
+    serializersModule = SerializersModule {
+        polymorphic(VerificationRelationship::class) {
+            subclass(VerificationRelationship.Reference::class, VerificationRelationship.Reference.serializer())
+            subclass(VerificationRelationship.Method::class, VerificationRelationship.Method.serializer())
+        }
+    }
+}
 /**
  * Extension function to convert a JsonElement (from Walt.id) to a typed DidDocument.
  */
