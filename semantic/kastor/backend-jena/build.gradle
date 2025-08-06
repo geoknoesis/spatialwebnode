@@ -1,0 +1,19 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm'
+    id 'java-library'
+}
+
+dependencies {
+    api project(':semantic:kastor:runtime')
+    api project(':semantic:jena-adapter')
+    implementation libs.kotlin.stdlib
+    implementation libs.logback.classic
+    
+    testImplementation libs.junit.jupiter.api
+    testImplementation libs.junit.jupiter.engine
+    testImplementation libs.kotlin.test
+}
+
+test {
+    useJUnitPlatform()
+}

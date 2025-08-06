@@ -1,0 +1,26 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm'
+    id 'java-library'
+}
+
+dependencies {
+    // Jakarta Bean Validation
+    api 'jakarta.validation:jakarta.validation-api:3.0.2'
+    
+    // Kotlin standard library
+    implementation libs.kotlin.stdlib
+    implementation libs.logback.classic
+    
+    // Testing
+    testImplementation libs.junit.jupiter.api
+    testImplementation libs.junit.jupiter.engine
+    testImplementation libs.kotlin.test
+    
+    // Validation implementation for testing
+    testImplementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'
+    testImplementation 'org.glassfish:jakarta.el:4.0.2'
+}
+
+test {
+    useJUnitPlatform()
+}

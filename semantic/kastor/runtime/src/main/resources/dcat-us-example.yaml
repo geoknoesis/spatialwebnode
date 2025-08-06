@@ -1,0 +1,29 @@
+# DCAT-US Example Configuration
+# Configuration for Data Catalog Vocabulary - US implementation
+
+schemaPaths:
+  - src/main/resources/dcat-us/dcat-us-3.0.shacl.ttl
+
+contextPaths:
+  - src/main/resources/dcat-us/dcat.context.jsonld
+
+interfacePackages:
+  - com.example.catalog
+
+prefixMappings:
+  dcat: "http://www.w3.org/ns/dcat#"
+  dcterms: "http://purl.org/dc/terms/"
+
+namespaceMappings:
+  dcat: "gov.us.dcat.core"
+  dcterms: "gov.us.dcat.terms"
+
+datatypeMappings:
+  "http://www.w3.org/2001/XMLSchema#date": "java.time.LocalDate"
+
+options:
+  validation: true
+  generateImpl: true
+  extrasProperty: true
+
+backend: "jena"

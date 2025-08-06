@@ -1,0 +1,24 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm'
+    id 'java-library'
+}
+
+dependencies {
+    api project(':semantic:kastor:runtime')
+    api project(':semantic:rdf4j-adapter')
+    implementation libs.kotlin.stdlib
+    implementation libs.logback.classic
+    
+    // RDF4J dependencies for repository creation
+    implementation libs.rdf4j.repository.api
+    implementation 'org.eclipse.rdf4j:rdf4j-repository-sail:4.3.4'
+    implementation 'org.eclipse.rdf4j:rdf4j-sail-memory:4.3.4'
+    
+    testImplementation libs.junit.jupiter.api
+    testImplementation libs.junit.jupiter.engine
+    testImplementation libs.kotlin.test
+}
+
+test {
+    useJUnitPlatform()
+}

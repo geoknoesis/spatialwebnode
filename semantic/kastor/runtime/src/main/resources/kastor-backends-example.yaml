@@ -1,0 +1,91 @@
+# Kastor Backend Configuration Examples
+# This file shows configuration examples for different RDF backends
+
+# ============================================
+# Jena Backend Configuration (Default)
+# ============================================
+backend: "jena"
+schemaPaths:
+  - "schemas/example.shacl.ttl"
+prefixMappings:
+  ex: "http://example.org/"
+  foaf: "http://xmlns.com/foaf/0.1/"
+options:
+  validation: true
+
+---
+# ============================================
+# RDF4J Backend Configuration
+# ============================================
+backend: "rdf4j"
+schemaPaths:
+  - "schemas/example.shacl.ttl"
+prefixMappings:
+  ex: "http://example.org/"
+  foaf: "http://xmlns.com/foaf/0.1/"
+options:
+  validation: true
+  repositoryType: "memory"  # Options: memory, native, http, sparql
+
+---
+# ============================================
+# RDF4J Native Store Configuration
+# ============================================
+backend: "rdf4j"
+schemaPaths:
+  - "schemas/example.shacl.ttl"
+options:
+  repositoryType: "native"
+  dataDirectory: "/path/to/data"
+  validation: true
+
+---
+# ============================================
+# SPARQL Endpoint Configuration
+# ============================================
+backend: "sparql"
+schemaPaths:
+  - "schemas/example.shacl.ttl"
+prefixMappings:
+  ex: "http://example.org/"
+  foaf: "http://xmlns.com/foaf/0.1/"
+options:
+  queryEndpoint: "http://localhost:8080/sparql"
+  updateEndpoint: "http://localhost:8080/update"
+  validation: false  # Validation typically done server-side
+
+---
+# ============================================
+# SPARQL Endpoint with Authentication
+# ============================================
+backend: "sparql"
+options:
+  queryEndpoint: "https://api.example.org/sparql"
+  updateEndpoint: "https://api.example.org/update"
+  authentication:
+    type: "basic"
+    username: "user"
+    password: "pass"
+  timeout: 30000
+
+---
+# ============================================
+# DCAT-US with RDF4J Backend
+# ============================================
+backend: "rdf4j"
+schemaPaths:
+  - "src/main/resources/dcat-us/dcat-us-3.0.shacl.ttl"
+contextPaths:
+  - "src/main/resources/dcat-us/dcat.context.jsonld"
+interfacePackages:
+  - "gov.us.dcat.core"
+prefixMappings:
+  dcat: "http://www.w3.org/ns/dcat#"
+  dcterms: "http://purl.org/dc/terms/"
+namespaceMappings:
+  dcat: "gov.us.dcat.core"
+  dcterms: "gov.us.dcat.terms"
+options:
+  repositoryType: "memory"
+  validation: true
+  generateImpl: true

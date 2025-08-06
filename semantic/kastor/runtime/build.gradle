@@ -1,0 +1,24 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm'
+    id 'java-library'
+}
+
+dependencies {
+    api project(':semantic:rdf-core')
+    implementation libs.kotlin.reflect
+    implementation libs.kotlin.stdlib
+    implementation libs.logback.classic
+    
+    // Jackson YAML for configuration loading
+    implementation libs.jackson.databind
+    implementation libs.jackson.module.kotlin
+    implementation libs.jackson.dataformat.yaml
+    
+    testImplementation libs.junit.jupiter.api
+    testImplementation libs.junit.jupiter.engine
+    testImplementation libs.kotlin.test
+}
+
+test {
+    useJUnitPlatform()
+}

@@ -57,6 +57,15 @@
 * [Transport Examples](examples/transport-examples.md)
 * [Integration Examples](examples/integration-examples.md)
 
+## Semantic Layer
+
+* [Semantic Overview](semantic/README.md)
+* [Kastor Framework](semantic/kastor/README.md)
+  * [Runtime](semantic/kastor/runtime.md)
+  * [Backends](semantic/kastor/backends.md)
+  * [Configuration](semantic/kastor/configuration.md)
+  * [Examples](semantic/kastor/examples.md)
+
 ## Reference
 
 * [Configuration Reference](reference/configuration.md)

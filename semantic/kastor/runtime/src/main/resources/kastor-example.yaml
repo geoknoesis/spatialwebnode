@@ -1,0 +1,57 @@
+# Example Kastor Configuration File
+# This file demonstrates all available configuration options
+
+# Schema and context files
+schemaPaths:
+  - "schemas/person.shacl.ttl"
+  - "schemas/organization.shacl.ttl"
+
+contextPaths:
+  - "contexts/base.jsonld"
+  - "contexts/custom.jsonld"
+
+# Packages to scan for annotated interfaces
+interfacePackages:
+  - "com.example.model"
+  - "com.example.entities"
+
+# Prefix mappings for cleaner URIs
+prefixMappings:
+  foaf: "http://xmlns.com/foaf/0.1/"
+  schema: "https://schema.org/"
+  ex: "http://example.org/"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+
+# Namespace to package mappings
+namespaceMappings:
+  "http://xmlns.com/foaf/0.1/": "com.example.foaf"
+  "https://schema.org/": "com.example.schema"
+
+# Custom datatype mappings
+datatypeMappings:
+  "http://www.w3.org/2001/XMLSchema#dateTime": "java.time.LocalDateTime"
+  "http://www.w3.org/2001/XMLSchema#date": "java.time.LocalDate"
+
+# SHACL shapes graphs for validation
+shapesGraphs:
+  "http://example.org/data": "http://example.org/shapes"
+  "http://example.org/users": "http://example.org/user-shapes"
+
+# Default graph for operations
+defaultGraph: "http://example.org/data"
+
+# JSON-LD options
+jsonld:
+  generateFromPojo: true
+  outputPath: "build/generated/kastor/context.jsonld"
+  mergeWithExisting: true
+
+# Framework options
+options:
+  enableValidation: true
+  generateExtras: true
+  nullSafeAccess: true
+  immutableObjects: false
+
+# Backend implementation (jena, rdf4j, sparql)
+backend: "jena"

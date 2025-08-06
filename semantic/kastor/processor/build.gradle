@@ -1,0 +1,22 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm'
+    id 'java-library'
+}
+
+dependencies {
+    implementation project(':semantic:kastor:runtime')
+    implementation libs.kotlin.reflect
+    implementation libs.kotlin.stdlib
+    implementation libs.logback.classic
+    
+    // KSP dependencies
+    implementation "com.google.devtools.ksp:symbol-processing-api:${libs.versions.ksp.get()}"
+    
+    testImplementation libs.junit.jupiter.api
+    testImplementation libs.junit.jupiter.engine
+    testImplementation libs.kotlin.test
+}
+
+test {
+    useJUnitPlatform()
+}

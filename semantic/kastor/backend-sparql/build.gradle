@@ -1,0 +1,23 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm'
+    id 'java-library'
+}
+
+dependencies {
+    api project(':semantic:kastor:runtime')
+    implementation libs.kotlin.stdlib
+    implementation libs.logback.classic
+    
+    // HTTP client for SPARQL endpoint communication
+    implementation libs.ktor.client.cio
+    implementation libs.ktor.client.content.negotiation
+    implementation libs.ktor.serialization.kotlinx.json
+    
+    testImplementation libs.junit.jupiter.api
+    testImplementation libs.junit.jupiter.engine
+    testImplementation libs.kotlin.test
+}
+
+test {
+    useJUnitPlatform()
+}
